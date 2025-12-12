@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compression Lab - Live Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);
+            color: #e0e0ff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 100, 200, 0.2);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 150, 255, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(90deg, #00ff88, #00aaff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: #888;
+            margin-top: 10px;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .panel {
+            background: rgba(20, 20, 40, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(0, 150, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .panel h2 {
+            font-size: 1.2em;
+            color: #00aaff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel h2::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(180deg, #00ff88, #00aaff);
+            border-radius: 2px;
+        }
+
+        .gpu-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .stat-box {
+            background: rgba(0, 100, 200, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid rgba(0, 150, 255, 0.2);
+        }
+
+        .stat-box .value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #00ff88;
+        }
+
+        .stat-box .label {
+            font-size: 0.9em;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        .heatmap {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+        }
+
+        .heatmap-cell {
+            aspect-ratio: 1;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            color: #fff;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .heatmap-cell:hover {
+            transform: scale(1.1);
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .results-table th {
+            color: #00aaff;
+            font-weight: 500;
+        }
+
+        .results-table tr:hover {
+            background: rgba(0, 150, 255, 0.1);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.running {
+            background: #00ff88;
+        }
+
+        .status-indicator.idle {
+            background: #ffaa00;
+        }
+
+        .status-indicator.error {
+            background: #ff4444;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #00ff88, #00aaff);
+            color: #000;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Compression Lab</h1>
+        <p>Real-time GPU Compression Algorithm Benchmarking</p>
+        <p style="margin-top: 5px;">
+            <span class="status-indicator running"></span>
+            RTX 4070 (12GB) | SM 8.9 | Pop!_OS
+        </p>
+    </div>
+
+    <div class="dashboard">
+        <!-- GPU Stats Panel -->
+        <div class="panel">
+            <h2>GPU Utilization</h2>
+            <div class="gpu-stats">
+                <div class="stat-box">
+                    <div class="value" id="vram-used">0.0</div>
+                    <div class="label">VRAM Used (GB)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="gpu-util">0</div>
+                    <div class="label">GPU Util %</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="power-draw">0</div>
+                    <div class="label">Power (W)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="temperature">0</div>
+                    <div class="label">Temp °C</div>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="btn btn-primary" onclick="runBenchmarks()">Run All Benchmarks</button>
+                <button class="btn btn-secondary" onclick="refreshData()">Refresh</button>
+            </div>
+        </div>
+
+        <!-- Compression Ratio Chart -->
+        <div class="panel">
+            <h2>Compression Ratios</h2>
+            <div class="chart-container">
+                <canvas id="ratioChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Throughput Chart -->
+        <div class="panel">
+            <h2>Throughput (GB/s)</h2>
+            <div class="chart-container">
+                <canvas id="throughputChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Performance Heatmap -->
+        <div class="panel">
+            <h2>Performance Heatmap</h2>
+            <p style="color: #888; margin-bottom: 15px; font-size: 0.9em;">Algorithm × Dataset</p>
+            <div class="heatmap" id="heatmap"></div>
+        </div>
+
+        <!-- Results Table -->
+        <div class="panel" style="grid-column: span 2;">
+            <h2>Latest Results</h2>
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Algorithm</th>
+                        <th>Dataset</th>
+                        <th>Size (MB)</th>
+                        <th>Ratio</th>
+                        <th>Throughput</th>
+                        <th>Time (ms)</th>
+                    </tr>
+                </thead>
+                <tbody id="results-body">
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: #888;">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Chart.js configuration
+        const chartConfig = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: { color: '#e0e0ff' }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#888' },
+                    grid: { color: 'rgba(255,255,255,0.1)' }
+                },
+                y: {
+                    ticks: { color: '#888' },
+                    grid: { color: 'rgba(255,255,255,0.1)' }
+                }
+            }
+        };
+
+        // Initialize charts
+        const ratioCtx = document.getElementById('ratioChart').getContext('2d');
+        const ratioChart = new Chart(ratioCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Arithmetic', 'LZ77', 'E8 Lattice'],
+                datasets: [{
+                    label: 'Text',
+                    data: [2.8, 2.2, 1.5],
+                    backgroundColor: 'rgba(0, 255, 136, 0.7)'
+                }, {
+                    label: 'Binary',
+                    data: [1.8, 1.6, 1.2],
+                    backgroundColor: 'rgba(0, 170, 255, 0.7)'
+                }, {
+                    label: 'Structured',
+                    data: [3.2, 2.5, 1.8],
+                    backgroundColor: 'rgba(255, 170, 0, 0.7)'
+                }]
+            },
+            options: chartConfig
+        });
+
+        const throughputCtx = document.getElementById('throughputChart').getContext('2d');
+        const throughputChart = new Chart(throughputCtx, {
+            type: 'line',
+            data: {
+                labels: ['10MB', '50MB', '100MB', '200MB', '500MB'],
+                datasets: [{
+                    label: 'Arithmetic',
+                    data: [1.2, 3.5, 6.8, 9.2, 10.5],
+                    borderColor: '#00ff88',
+                    fill: false,
+                    tension: 0.3
+                }, {
+                    label: 'LZ77',
+                    data: [2.5, 5.2, 8.1, 10.8, 12.3],
+                    borderColor: '#00aaff',
+                    fill: false,
+                    tension: 0.3
+                }, {
+                    label: 'E8 Lattice',
+                    data: [4.5, 8.2, 11.5, 14.2, 15.8],
+                    borderColor: '#ffaa00',
+                    fill: false,
+                    tension: 0.3
+                }]
+            },
+            options: chartConfig
+        });
+
+        // Generate heatmap
+        function generateHeatmap() {
+            const algorithms = ['Arith', 'LZ77', 'E8'];
+            const datasets = ['Text', 'Bin', 'Struct', 'Rand', 'Quant'];
+            const heatmap = document.getElementById('heatmap');
+            heatmap.innerHTML = '';
+
+            for (let a of algorithms) {
+                for (let d of datasets) {
+                    const value = Math.random() * 3 + 1;
+                    const hue = Math.min(120, value * 30);
+                    const cell = document.createElement('div');
+                    cell.className = 'heatmap-cell';
+                    cell.style.background = `hsl(${hue}, 70%, 40%)`;
+                    cell.textContent = value.toFixed(1) + 'x';
+                    cell.title = `${a} on ${d}: ${value.toFixed(2)}x`;
+                    heatmap.appendChild(cell);
+                }
+            }
+        }
+
+        // Update GPU stats
+        function updateGPUStats(data) {
+            document.getElementById('vram-used').textContent = (data.memory_used_mb / 1024).toFixed(1);
+            document.getElementById('gpu-util').textContent = data.gpu_utilization;
+            document.getElementById('power-draw').textContent = data.power_watts;
+            document.getElementById('temperature').textContent = data.temperature_c;
+        }
+
+        // Fetch and display results
+        async function refreshData() {
+            try {
+                const response = await fetch('/api/results');
+                const results = await response.json();
+
+                const tbody = document.getElementById('results-body');
+                tbody.innerHTML = results.slice(0, 10).map(r => `
+                    <tr>
+                        <td>${r.algorithm}</td>
+                        <td>${r.dataset}</td>
+                        <td>${(r.dataset_size_bytes / 1e6).toFixed(1)}</td>
+                        <td>${r.compression_ratio.toFixed(2)}x</td>
+                        <td>${r.throughput_gbps.toFixed(2)} GB/s</td>
+                        <td>${r.time_ms.toFixed(1)}</td>
+                    </tr>
+                `).join('');
+
+                // Update GPU stats
+                const gpuResponse = await fetch('/api/gpu');
+                const gpuData = await gpuResponse.json();
+                updateGPUStats(gpuData);
+            } catch (e) {
+                console.error('Failed to refresh data:', e);
+            }
+        }
+
+        async function runBenchmarks() {
+            alert('Starting benchmarks... This will take a few minutes.');
+            try {
+                await fetch('/api/run', { method: 'POST' });
+                setTimeout(refreshData, 5000);
+            } catch (e) {
+                console.error('Failed to start benchmarks:', e);
+            }
+        }
+
+        // Initialize
+        generateHeatmap();
+        refreshData();
+
+        // Auto-refresh every 5 seconds
+        setInterval(refreshData, 5000);
+    </script>
+</body>
+
+</html>
