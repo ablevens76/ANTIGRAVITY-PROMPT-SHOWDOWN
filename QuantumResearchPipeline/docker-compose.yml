@@ -1,0 +1,64 @@
+version: "3.8"
+
+services:
+  jupyter:
+    image: jupyter/scipy-notebook:python-3.9
+    container_name: quantum_jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/notebooks
+      - ./simulations:/home/jovyan/simulations
+      - ./papers:/home/jovyan/papers
+      - ./models:/home/jovyan/models
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=quantum2024
+    command: start-notebook.sh --NotebookApp.token=quantum2024
+    restart: unless-stopped
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+    container_name: quantum_dashboard
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./dashboard:/app/dashboard
+      - ./simulations:/app/simulations
+      - ./papers:/app/papers
+      - ./models:/app/models
+    environment:
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_HEADLESS=true
+    command: streamlit run dashboard/app.py
+    restart: unless-stopped
+    depends_on:
+      - jupyter
+
+  # GPU-enabled service for vision model inference (optional)
+  gpu-inference:
+    image: nvidia/cuda:11.8-runtime-ubuntu22.04
+    container_name: quantum_gpu
+    runtime: nvidia
+    volumes:
+      - ./models:/app/models
+      - ./vision_trainer.py:/app/vision_trainer.py
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    profiles:
+      - gpu
+
+volumes:
+  notebooks:
+  simulations:
+  papers:
+  models:

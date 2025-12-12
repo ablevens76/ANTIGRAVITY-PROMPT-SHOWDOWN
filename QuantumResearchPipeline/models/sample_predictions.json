@@ -1,0 +1,72 @@
+[
+  {
+    "sample": 0,
+    "true_class": "Quantum Circuit",
+    "predicted_class": "Quantum Circuit",
+    "confidence": "92.8%",
+    "correct": true
+  },
+  {
+    "sample": 1,
+    "true_class": "Compression Visual",
+    "predicted_class": "Compression Visual",
+    "confidence": "69.4%",
+    "correct": true
+  },
+  {
+    "sample": 2,
+    "true_class": "Quantum Circuit",
+    "predicted_class": "Quantum Circuit",
+    "confidence": "93.3%",
+    "correct": true
+  },
+  {
+    "sample": 3,
+    "true_class": "Compression Visual",
+    "predicted_class": "Compression Visual",
+    "confidence": "58.3%",
+    "correct": true
+  },
+  {
+    "sample": 4,
+    "true_class": "Quantum Circuit",
+    "predicted_class": "Quantum Circuit",
+    "confidence": "95.5%",
+    "correct": true
+  },
+  {
+    "sample": 5,
+    "true_class": "Compression Visual",
+    "predicted_class": "Compression Visual",
+    "confidence": "58.6%",
+    "correct": true
+  },
+  {
+    "sample": 6,
+    "true_class": "Quantum Circuit",
+    "predicted_class": "Quantum Circuit",
+    "confidence": "92.5%",
+    "correct": true
+  },
+  {
+    "sample": 7,
+    "true_class": "Compression Visual",
+    "predicted_class": "Compression Visual",
+    "confidence": "50.4%",
+    "correct": true
+  },
+  {
+    "sample": 8,
+    "true_class": "Quantum Circuit",
+    "predicted_class": "Quantum Circuit",
+    "confidence": "94.4%",
+    "correct": true
+  },
+  {
+    "sample": 9,
+    "true_class": "Compression Visual",
+    "predicted_class": "Quantum Circuit",
+    "confidence": "51.9%",
+    "correct": false
+  }
+]

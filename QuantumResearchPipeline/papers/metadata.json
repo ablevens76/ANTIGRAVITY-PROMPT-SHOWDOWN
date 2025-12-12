@@ -1,0 +1,135 @@
+[
+  {
+    "id": "2403.02240v5",
+    "title": "Quantum Computing: Vision and Challenges",
+    "authors": [
+      "Sukhpal Singh Gill",
+      "Oktay Cetinkaya",
+      "Stefano Marrone",
+      "Daniel Claudino",
+      "David Haunschild",
+      "Leon Schlote",
+      "Huaming Wu",
+      "Carlo Ottaviani",
+      "Xiaoyuan Liu",
+      "Sree Pragna Machupalli",
+      "Kamalpreet Kaur",
+      "Priyansh Arora",
+      "Ji Liu",
+      "Ahmed Farouk",
+      "Houbing Herbert Song",
+      "Steve Uhlig",
+      "Kotagiri Ramamohanarao"
+    ],
+    "abstract": "The recent development of quantum computing, which uses entanglement, superposition, and other quantum fundamental concepts, can provide substantial processing advantages over traditional computing. These quantum features help solve many complex problems that cannot be solved otherwise with conventional computing methods. These problems include modeling quantum mechanics, logistics, chemical-based advances, drug design, statistical science, sustainable energy, banking, reliable communication, and quantum chemical engineering. The last few years have witnessed remarkable progress in quantum software and algorithm creation and quantum hardware research, which has significantly advanced the prospect of realizing quantum computers. It would be helpful to have comprehensive literature research on this area to grasp the current status and find outstanding problems that require considerable attention from the research community working in the quantum computing industry. To better understand quantum computing, this paper examines the foundations and vision based on current research in this area. We discuss cutting-edge developments in quantum computer hardware advancement and subsequent advances in quantum cryptography, quantum software, and high-scalability quantum computers. Many potential challenges and exciting new trends for quantum technology research and development are highlighted in this paper for a broader debate.",
+    "published": "2024-03-04T17:33:18+00:00",
+    "updated": "2025-04-07T15:07:51+00:00",
+    "categories": [
+      "cs.DC",
+      "cs.ET",
+      "quant-ph"
+    ],
+    "pdf_url": "https://arxiv.org/pdf/2403.02240v5",
+    "primary_category": "cs.DC",
+    "relevance_score": 19
+  },
+  {
+    "id": "2403.04006v3",
+    "title": "Piquasso: A Photonic Quantum Computer Simulation Software Platform",
+    "authors": [
+      "Zolt\u00e1n Kolarovszki",
+      "Tomasz Rybotycki",
+      "P\u00e9ter Rakyta",
+      "\u00c1goston Kaposi",
+      "Boldizs\u00e1r Po\u00f3r",
+      "Szabolcs J\u00f3czik",
+      "D\u00e1niel T. R. Nagy",
+      "Henrik Varga",
+      "Kareem H. El-Safty",
+      "Gregory Morse",
+      "Micha\u0142 Oszmaniec",
+      "Tam\u00e1s Kozsik",
+      "Zolt\u00e1n Zimbor\u00e1s"
+    ],
+    "abstract": "We introduce the Piquasso quantum programming framework, a full-stack open-source software platform for the simulation and programming of photonic quantum computers. Piquasso can be programmed via a high-level Python programming interface enabling users to perform efficient quantum computing with discrete and continuous variables. Via optional high-performance C++ backends, Piquasso provides state-of-the-art performance in the simulation of photonic quantum computers. The Piquasso framework is supported by an intuitive web-based graphical user interface where the users can design quantum circuits, run computations, and visualize the results.",
+    "published": "2024-03-06T19:31:50+00:00",
+    "updated": "2025-03-30T23:04:19+00:00",
+    "categories": [
+      "quant-ph"
+    ],
+    "pdf_url": "https://arxiv.org/pdf/2403.04006v3",
+    "primary_category": "quant-ph",
+    "relevance_score": 18
+  },
+  {
+    "id": "2506.15909v1",
+    "title": "Entangling Disciplines: Causality, Entropy and Time-Travel Paradoxes on a Quantum Computer",
+    "authors": [
+      "Maria Violaris"
+    ],
+    "abstract": "Merging disciplines has led to incredible learnings and breakthroughs throughout history, including the discovery of quantum computing: a cross between computation and quantum physics. In this paper, I will discuss how we can cross quantum computing with topics in fundamental physics. This leads to fruitful, interactive learning opportunities that fuse deep open physics problems with key insights about quantum information science. By outlining quantum circuit experiments that can be run on current and near-term quantum computers, I demonstrate how to help learners engage with principles in special relativity, general relativity and thermodynamics. In turn, these connections can advance their understanding of quantum computing. Learners can further explore the quantum computing activities in this paper via the Quantum Paradoxes content series of videos, blogs and code tutorials that I created with IBM Quantum.",
+    "published": "2025-06-18T23:07:07+00:00",
+    "updated": "2025-06-18T23:07:07+00:00",
+    "categories": [
+      "quant-ph"
+    ],
+    "pdf_url": "https://arxiv.org/pdf/2506.15909v1",
+    "primary_category": "quant-ph",
+    "relevance_score": 17
+  },
+  {
+    "id": "2401.04670v1",
+    "title": "Modified Levenberg-Marquardt Algorithm For Tensor CP Decomposition in Image Compression",
+    "authors": [
+      "Ramin Goudarzi Karim",
+      "Dipak Dulal",
+      "Carmeliza Navasca"
+    ],
+    "abstract": "This paper explores a new version of the Levenberg-Marquardt algorithm used for Tensor Canonical Polyadic (CP) decomposition with an emphasis on image compression and reconstruction. Tensor computation, especially CP decomposition, holds significant applications in data compression and analysis. In this study, we formulate CP as a nonlinear least squares optimization problem. Then, we present an iterative Levenberg-Marquardt (LM) based algorithm for computing the CP decomposition. Ultimately, we test the algorithm on various datasets, including randomly generated tensors and RGB images. The proposed method proves to be both efficient and effective, offering a reduced computational burden when compared to the traditional Levenberg-Marquardt technique.",
+    "published": "2024-01-09T16:53:47+00:00",
+    "updated": "2024-01-09T16:53:47+00:00",
+    "categories": [
+      "math.NA"
+    ],
+    "pdf_url": "https://arxiv.org/pdf/2401.04670v1",
+    "primary_category": "math.NA",
+    "relevance_score": 11
+  },
+  {
+    "id": "2512.10504v1",
+    "title": "Tianyan: Cloud services with quantum advantage",
+    "authors": [
+      "Tianyan Quantum Group"
+    ],
+    "abstract": "Tianyan Quantum Cloud Platform offers cloud services demonstrating quantum advantage capabilities with a Zuchongzhi 3.0-like superconducting quantum processor. This cloud-accessible superconducting quantum prototype, named Tianyan-287, features 105 qubits and achieves high operational fidelities, with single-qubit gates, two-qubit gates, and readout fidelity at 99.90%, 99.56%, 98.7%, respectively. For a specific benchmark task involving random circuit sampling on a 74-qubit system over 24 cycles, the platform completes one million samples in just 18.4 minutes. In contrast, state-of-the-art classical supercomputers would require approximately 16,000 years to complete the equivalent calculation. To facilitate this, the platform provides access via Cqlib, an open-source SDK designed for working with quantum systems at the level of extended quantum circuits, operators, and primitives. The cloud service aims to democratize access to high-performance quantum hardware, enabling the community to validate and explore practical quantum advantages.",
+    "published": "2025-12-11T10:23:39+00:00",
+    "updated": "2025-12-11T10:23:39+00:00",
+    "categories": [
+      "quant-ph"
+    ],
+    "pdf_url": "https://arxiv.org/pdf/2512.10504v1",
+    "primary_category": "quant-ph",
+    "relevance_score": 10
+  },
+  {
+    "id": "2408.03613v1",
+    "title": "A Predictive Approach for Selecting the Best Quantum Solver for an Optimization Problem",
+    "authors": [
+      "Deborah Volpe",
+      "Nils Quetschlich",
+      "Mariagrazia Graziano",
+      "Giovanna Turvani",
+      "Robert Wille"
+    ],
+    "abstract": "Leveraging quantum computers for optimization problems holds promise across various application domains. Nevertheless, utilizing respective quantum computing solvers requires describing the optimization problem according to the Quadratic Unconstrained Binary Optimization (QUBO) formalism and selecting a proper solver for the application of interest with a reasonable setting. Both demand significant proficiency in quantum computing, QUBO formulation, and quantum solvers, a background that usually cannot be assumed by end users who are domain experts rather than quantum computing specialists. While tools aid in QUBO formulations, support for selecting the best-solving approach remains absent. This becomes even more challenging because selecting the best solver for a problem heavily depends on the problem itself. In this work, we are accepting this challenge and propose a predictive selection approach, which aids end users in this task. To this end, the solver selection task is first formulated as a classification task that is suitable to be solved by supervised machine learning. Based on that, we then propose strategies for adjusting solver parameters based on problem size and characteristics. Experimental evaluations, considering more than 500 different QUBO problems, confirm the benefits of the proposed solution. In fact, we show that in more than 70% of the cases, the best solver is selected, and in about 90% of the problems, a solver in the top two, i.e., the best or its closest suboptimum, is selected. This exploration proves the potential of machine learning in quantum solver selection and lays the foundations for its automation, broadening access to quantum optimization for a wider range of users.",
+    "published": "2024-08-07T08:14:58+00:00",
+    "updated": "2024-08-07T08:14:58+00:00",
+    "categories": [
+      "quant-ph",
+      "cs.ET"
+    ],
+    "pdf_url": "https://arxiv.org/pdf/2408.03613v1",
+    "primary_category": "quant-ph",
+    "relevance_score": 5
+  }
+]

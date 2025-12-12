@@ -1,0 +1,13 @@
+arxiv
+requests
+torch
+torchvision
+qiskit
+qiskit-aer
+matplotlib
+numpy
+nbformat
+streamlit
+Pillow
+plotly
+pylatexenc
