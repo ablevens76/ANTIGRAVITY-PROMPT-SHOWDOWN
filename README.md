@@ -1,0 +1,157 @@
+# 🚀 ANTIGRAVITY PROMPT SHOWDOWN
+
+**6 AI-Generated Projects Showcasing State-of-the-Art Capabilities**
+
+This repository contains 6 unique projects, each created from a single prompt to different AI models. Every project is self-contained, runnable, and demonstrates cutting-edge techniques in GPU computing, visualization, and research automation.
+
+---
+
+## Projects Overview
+
+| Folder | Model | Project | Description |
+|--------|-------|---------|-------------|
+| `Sonnet 4.5/` | Claude Sonnet 4.5 | **Compression Lab** | 3 CUDA compression algorithms with live D3.js dashboard |
+| `KIMI K2/` | KIMI K2 | **Quantum Compression** | MPS tensor networks + Huffman in Rust |
+| `Grok 4.1/` | Grok 4.1 | **Quantum Navigator** | WebGL E8 lattice flight game |
+| `Gemini 3 Pro/` | Gemini 3 Pro | **Entropy Garden** | System telemetry 3D visualization |
+| `GPT 5.2/` | GPT 5.2 | **TimeCapsule** | GPU-accelerated video search |
+| `Sonar/` | Sonar | **Quantum Research Pipeline** | ArXiv scraping + quantum simulation |
+
+---
+
+## 🎮 Sonnet 4.5 - Compression Lab
+
+**What**: GPU-accelerated compression algorithm research with live benchmarking dashboard.
+
+**Features**:
+- 3 CUDA kernels (Arithmetic, LZ77, E8 Lattice)
+- Real-time GPU monitoring
+- D3.js/Chart.js visualization
+- SQLite benchmark logging
+
+**Run**:
+```bash
+cd "Sonnet 4.5/compression_lab"
+./scripts/run_benchmarks.sh
+# Dashboard at http://localhost:8080
+```
+
+---
+
+## 🧬 KIMI K2 - Quantum Compression
+
+**What**: Rust implementation of quantum-inspired compression using Matrix Product States.
+
+**Features**:
+- MPS tensor decomposition
+- Adaptive Huffman coding
+- CUDA kernel stubs for RTX 4070
+- Criterion benchmarks vs zlib
+
+**Run**:
+```bash
+cd "KIMI K2/quantum_compression"
+cargo build --release
+cargo test --release
+```
+
+---
+
+## 🌌 Grok 4.1 - Quantum Navigator
+
+**What**: WebGL first-person flight game through an E8 lattice with quantum tunneling.
+
+**Features**:
+- Authentic 240 E8 roots (112 + 128)
+- Chromatic dispersion shaders
+- WASD flight controls
+- God rays and wavefunction collapse effects
+
+**Run**:
+```bash
+cd "Grok 4.1/quantum_navigator"
+npm install
+npm run dev
+# Open http://localhost:3000
+```
+
+---
+
+## 📊 Gemini 3 Pro - Entropy Garden
+
+**What**: Real-time system telemetry visualization with 3D E8 lattice.
+
+**Features**:
+- WebSocket backend
+- Three.js point cloud rendering
+- CPU/Memory/Entropy monitoring
+- Cyberpunk aesthetic
+
+**Run**:
+```bash
+cd "Gemini 3 Pro/entropy_garden"
+# Backend
+cd backend && python main.py
+# Frontend
+cd frontend && npm run dev
+```
+
+---
+
+## 🎬 GPT 5.2 - TimeCapsule
+
+**What**: GPU-accelerated video search system with keyframe extraction.
+
+**Features**:
+- CLIP-based video search
+- WhisperX transcription
+- SQLite database
+- Flask web interface
+
+**Run**:
+```bash
+cd "GPT 5.2/timecapsule"
+pip install -e .
+timecapsule ingest video.mp4
+timecapsule search "keyword"
+```
+
+---
+
+## 🔬 Sonar - Quantum Research Pipeline
+
+**What**: Automated ArXiv paper scraping with quantum circuit simulation.
+
+**Features**:
+- ArXiv API integration
+- Qiskit quantum simulation
+- Streamlit dashboard
+- Docker deployment
+
+**Run**:
+```bash
+cd "Sonar/QuantumResearchPipeline"
+pip install -r requirements.txt
+streamlit run dashboard/app.py
+```
+
+---
+
+## Hardware Requirements
+
+All projects are optimized for:
+- **GPU**: NVIDIA RTX 4070 (12GB VRAM, SM 8.9)
+- **RAM**: 64GB DDR5
+- **OS**: Pop!_OS / Ubuntu Linux
+
+---
+
+## License
+
+MIT - Each project is independently usable and modifiable.
+
+---
+
+## Author
+
+Created during the **Antigravity Prompt Showdown** - a comparison of frontier AI model capabilities in code generation.
