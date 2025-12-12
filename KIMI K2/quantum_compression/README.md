@@ -1,0 +1,104 @@
+# Quantum Compression
+
+Hybrid MPS tensor network + adaptive Huffman compression optimized for RTX 4070.
+
+## Overview
+
+This library implements a quantum-inspired compression algorithm that combines:
+- **Matrix Product States (MPS)**: Tensor network decomposition for structured data
+- **Adaptive Huffman Coding**: Entropy-based compression of tensor representations
+- **CUDA Acceleration**: GPU kernels optimized for Ada Lovelace architecture
+
+## System Requirements
+
+| Component | Minimum | Recommended |
+|-----------|---------|-------------|
+| GPU | CUDA 11.0+ | RTX 4070 (12GB VRAM) |
+| RAM | 16GB | 64GB |
+| OS | Linux | Pop!_OS 22.04 |
+| Rust | 1.75+ | 1.83+ |
+
+## Quick Start
+
+```bash
+# Clone and build
+cd "KIMI K2/quantum_compression"
+chmod +x build_popos.sh
+./build_popos.sh
+
+# Run tests
+cargo test --release
+
+# Run benchmarks
+cargo bench
+```
+
+## API Usage
+
+```rust
+use quantum_compression::{compress, decompress, Config};
+
+fn main() {
+    let data = b"Your data here...";
+    let config = Config::default();
+    
+    // Compress
+    let (compressed, stats) = compress(data, &config).unwrap();
+    println!("Ratio: {:.2}x", stats.compression_ratio);
+    
+    // Decompress
+    let restored = decompress(&compressed).unwrap();
+}
+```
+
+## Architecture
+
+```
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│   Input Data    │ ──▶ │ MPS Decompose   │ ──▶ │ Huffman Encode  │
+│   (64GB RAM)    │     │ (Tensor Chain)  │     │ (Bitstream)     │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+        │                       │                       │
+        ▼                       ▼                       ▼
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│   Preprocessing │     │  CUDA Kernels   │     │   Compressed    │
+│   (CPU/RAM)     │     │  (12GB VRAM)    │     │   Output        │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+```
+
+## Performance
+
+Target performance on RTX 4070:
+- **Compression ratio**: 3.2x improvement over zlib on quantum circuit data
+- **VRAM utilization**: 85%+ (10GB of 12GB)
+- **Throughput**: ~1GB/s for large datasets
+
+## File Structure
+
+```
+quantum_compression/
+├── Cargo.toml          # Dependencies
+├── build_popos.sh      # Pop!_OS build script
+├── src/
+│   ├── lib.rs          # Main API
+│   ├── mps.rs          # Matrix Product States
+│   ├── huffman.rs      # Adaptive Huffman
+│   ├── compress.rs     # Compression pipeline
+│   └── error.rs        # Error types
+├── cuda_kernels/
+│   └── mps_kernel.cu   # CUDA tensor operations
+├── tests/
+│   └── edge_cases.rs   # Test suite
+└── benches/
+    └── vs_zlib.rs      # Benchmarks
+```
+
+## References
+
+1. Tensor Networks in Quantum Information (Orus, 2014)
+2. Adaptive Huffman Coding (Vitter, 1987)
+3. CUDA Programming Guide (NVIDIA)
+
+## License
+
+MIT
