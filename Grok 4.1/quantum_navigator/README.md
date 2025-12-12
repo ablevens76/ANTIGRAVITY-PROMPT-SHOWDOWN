@@ -1,0 +1,103 @@
+# Quantum Antigravity Navigator
+
+A real-time WebGL game visualizing antigravity flight through an E8 lattice with quantum superposition effects.
+
+![Quantum Navigator](https://img.shields.io/badge/Three.js-v0.169-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue) ![Vite](https://img.shields.io/badge/Vite-5.4-purple)
+
+---
+
+## 🚀 Quick Start
+
+```bash
+npm install
+npm run dev
+# Open http://localhost:3000 (or 3001 if 3000 is in use)
+```
+
+---
+
+## 🎮 Controls
+
+| Key | Action |
+|-----|--------|
+| **WASD** | Directional flight |
+| **Mouse** | Look around (click to enable pointer lock) |
+| **SPACE** | Quantum tunnel |
+| **SHIFT** | Boost |
+| **Q/E** | Vertical movement |
+
+---
+
+## ⚛️ Features
+
+### E8 Lattice (120 vertices)
+- Golden ratio icosahedral compound projection
+- Dynamic gravity wells with shader effects
+- Edge connections visualizing polytope structure
+
+### Antigravity Physics
+- Inverse-square repulsion from gravity wells
+- Inertial flight with friction dampening
+- Boost capability for rapid traversal
+
+### Quantum Effects
+- **Quantum Tunneling**: Press SPACE to teleport forward with visual superposition effect
+- **Particle System**: 3000 quantum particles with jitter animation
+- **God Rays**: Volumetric light rays with shader-based rendering
+- **Starfield**: 5000 background stars
+
+### Visuals
+- ACE Filmic tone mapping
+- Exponential fog for depth
+- Additive blending on particles
+- Fresnel-based glow on gravity wells
+
+---
+
+## 📁 Project Structure
+
+```
+quantum_navigator/
+├── src/
+│   ├── main.ts        # Game initialization & loop
+│   ├── e8lattice.ts   # E8 geometry generation
+│   ├── player.ts      # Flight controls & physics
+│   └── quantum.ts     # Particle effects & shaders
+├── index.html         # Game UI with HUD
+├── vite.config.ts     # Build configuration
+└── GPU_DIAGNOSTICS.md # Hardware verification
+```
+
+---
+
+## 🖥️ System Requirements
+
+| Component | Minimum | Recommended |
+|-----------|---------|-------------|
+| GPU | GTX 1060 | RTX 4070 |
+| VRAM | 4 GB | 12 GB |
+| RAM | 8 GB | 16 GB |
+| Browser | Chrome 90+ | Chrome 120+ |
+
+---
+
+## 🔧 Build
+
+```bash
+npm run build
+# Output in /dist folder
+```
+
+---
+
+## 📊 Performance Targets
+
+- **FPS**: 120+ on RTX 4070
+- **VRAM**: <500 MB
+- **Draw Calls**: <50 per frame
+
+---
+
+## License
+
+MIT

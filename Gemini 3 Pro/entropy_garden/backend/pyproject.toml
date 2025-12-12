@@ -1,0 +1,29 @@
+[project]
+name = "entropy_garden_backend"
+version = "0.1.0"
+description = "Real-time system telemetry backend for Entropy_Garden"
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi>=0.100",
+    "uvicorn[standard]>=0.20",
+    "websockets>=12.0",
+    "psutil>=5.9",
+    "pynvml>=11.5",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.21",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
