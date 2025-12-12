@@ -1,87 +1,110 @@
 # Compression Lab
 
-Self-optimizing GPU compression algorithm research for RTX 4070.
+**GPU-Accelerated Compression Algorithm Research for RTX 4070**
 
-## Overview
+A self-optimizing research environment that benchmarks three novel CUDA compression algorithms on your GPU, visualizes performance in real-time, and exports results for analysis.
 
-Three CUDA-accelerated compression algorithms:
-1. **Arithmetic Coding** - Parallel entropy estimation + range encoding
-2. **LZ77 Parallel** - Hash-based matching with sliding window
-3. **E8 Lattice** - Novel E8 root pattern recognition (research)
+---
+
+## What It Does
+
+1. **Runs 3 CUDA compression algorithms** on diverse test data (text, binary, structured, random)
+2. **Monitors GPU performance** (VRAM, power, temperature) via nvidia-smi
+3. **Displays live results** in an interactive D3.js/Chart.js dashboard
+4. **Logs all benchmarks** to SQLite for later analysis
+5. **Generates comparison reports** showing which algorithm wins for which data type
+
+---
+
+## The Algorithms
+
+| Algorithm | How It Works | Best For |
+|-----------|--------------|----------|
+| **Arithmetic Coding** | Parallel entropy estimation + range encoding | High compression on text |
+| **LZ77 Parallel** | Hash-based pattern matching with 32KB sliding window | Balanced speed/ratio |
+| **E8 Lattice** (Novel) | Maps data to E8 root vectors (240 patterns) for geometric encoding | Structured/scientific data |
+
+---
 
 ## Quick Start
 
 ```bash
-# Install dependencies
-pip install flask
+# 1. Navigate to project
+cd "Sonnet 4.5/compression_lab"
 
-# Run benchmarks
-cd scripts
-chmod +x *.sh
-./run_benchmarks.sh
+# 2. Run benchmarks (generates test data automatically)
+./scripts/run_benchmarks.sh
 
-# View dashboard
-cd ../dashboard
-python3 server.py
-# Open http://localhost:8080
+# 3. View live dashboard
+cd dashboard && python3 server.py
+# Open http://localhost:8080 in your browser
 ```
+
+---
+
+## Dashboard Features
+
+- **GPU Stats Panel** - Real-time VRAM, utilization, power, temperature
+- **Compression Ratio Chart** - Compare algorithms across data types
+- **Throughput Chart** - Speed comparison (GB/s) at different data sizes
+- **Performance Heatmap** - Algorithm × Dataset matrix
+- **Results Table** - All benchmark runs with detailed metrics
+
+---
 
 ## Project Structure
 
 ```
 compression_lab/
-├── src/cuda/
-│   ├── common.cuh           # CUDA utilities
-│   ├── arithmetic_coding.cu # Range encoder
-│   ├── lz77_parallel.cu     # LZ77 with hash
-│   └── e8_lattice.cu        # E8 pattern matching
+├── src/cuda/                 # CUDA kernels (SM 8.9 optimized)
+│   ├── arithmetic_coding.cu  # Range encoding with parallel CDF
+│   ├── lz77_parallel.cu      # Hash-based LZ77
+│   └── e8_lattice.cu         # E8 pattern matching (research)
 ├── benchmarks/
-│   ├── harness.py           # Benchmark runner
-│   └── dataset_gen.py       # Test data generator
+│   ├── harness.py            # Main benchmark runner
+│   └── dataset_gen.py        # Test data generator (10-500MB)
 ├── dashboard/
-│   ├── index.html           # D3.js/Chart.js UI
-│   └── server.py            # Flask API
-├── scripts/
-│   ├── build.sh             # CUDA compiler
-│   └── run_benchmarks.sh    # Full suite runner
-└── results/
-    └── benchmarks.db        # SQLite database
+│   ├── index.html            # Interactive D3.js visualization
+│   └── server.py             # Flask API server
+├── results/
+│   └── benchmarks.db         # SQLite results database
+└── scripts/
+    ├── build.sh              # CUDA compiler (nvcc -arch=sm_89)
+    └── run_benchmarks.sh     # Full suite runner
 ```
 
-## Hardware Requirements
+---
 
-| Component | Requirement |
-|-----------|-------------|
-| GPU | RTX 4070 or better (SM 8.9+) |
-| VRAM | 12GB |
-| RAM | 64GB (for large datasets) |
-| CUDA | 11.0+ |
+## System Requirements
 
-## Algorithms
+| Component | Minimum | Recommended |
+|-----------|---------|-------------|
+| GPU | CUDA-capable | RTX 4070 (12GB VRAM) |
+| CUDA | 11.0+ | 12.0+ |
+| Python | 3.8+ | 3.9+ |
+| RAM | 16GB | 64GB (for large datasets) |
 
-### Arithmetic Coding (SM 8.9)
-- Block-parallel frequency counting
-- Prefix sum for CDF
-- Range encoding with renormalization
-- **Best for**: High compression on text
-
-### LZ77 Parallel
-- Hash table for 3-byte sequences
-- Parallel match finding (64-chain limit)
-- Token encoding: literal or (length, offset)
-- **Best for**: Balanced speed/ratio
-
-### E8 Lattice (Research)
-- 240 E8 root vectors for pattern matching
-- Maps 64-byte blocks to 8D vectors
-- Quantized residual encoding
-- **Best for**: Structured/scientific data
+---
 
 ## Performance Targets
 
-- Throughput: >10 GB/s
-- VRAM: <85% utilization
-- Temperature: <75°C
+- **Throughput**: >10 GB/s on at least one algorithm
+- **VRAM**: <85% utilization (10GB of 12GB)
+- **Temperature**: <75°C (auto-cooldown if exceeded)
+
+---
+
+## API Endpoints (Dashboard Server)
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/` | GET | Dashboard HTML |
+| `/api/results` | GET | All benchmark results (JSON) |
+| `/api/gpu` | GET | Current GPU metrics |
+| `/api/run` | POST | Start new benchmark run |
+| `/api/summary` | GET | Algorithm averages |
+
+---
 
 ## License
 
