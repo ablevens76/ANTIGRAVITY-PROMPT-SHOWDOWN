@@ -1,96 +1,176 @@
-# QuantumResearchPipeline
+# QuantumResearchPipeline 🔬⚛️
 
-A multi-agent quantum computing research workspace featuring paper scraping, vision model training, and quantum circuit simulation.
+> A multi-agent quantum computing research workspace featuring paper scraping, vision model training, and quantum circuit simulation.
 
-## 🚀 System Specs & Performance
+[![Python 3.9](https://img.shields.io/badge/Python-3.9-blue.svg)](https://python.org)
+[![RTX 4070](https://img.shields.io/badge/GPU-RTX%204070-green.svg)](https://nvidia.com)
+[![Tests Passing](https://img.shields.io/badge/tests-16%2F16%20passing-brightgreen.svg)](#testing)
 
-| Component | Specification | Benchmark |
-|-----------|---------------|-----------|
-| **GPU** | NVIDIA RTX 4070 (12GB VRAM) | Vision training: ~30s |
-| **RAM** | 64GB DDR4 | Qiskit sims: <10s |
-| **Python** | 3.9.19 | |
-| **OS** | Pop!_OS Linux | |
+---
 
-## 📦 Components
+## 🖥️ System Requirements
 
-### Agent 1: arXivScraper
-- Scrapes quantum computing + photonic compression papers from arXiv API
-- Downloads top 5 PDFs, extracts metadata to JSON
-- **Output**: `papers/metadata.json`, `papers/*.pdf`
+| Component | Specification |
+|-----------|---------------|
+| **GPU** | NVIDIA RTX 4070 (12GB VRAM) |
+| **RAM** | 64GB DDR4 |
+| **Python** | 3.9.19 |
+| **OS** | Pop!_OS / Ubuntu |
 
-### Agent 2: VisionModelTrainer
-- Fine-tunes MobileNetV3-Small on RTX 4070
-- Binary classification: quantum circuit vs compression visual
-- **Performance**: 94% validation accuracy, 90% test accuracy (10 epochs)
-- **Output**: `models/mobilenetv3_quantum.pth`
+---
 
-### Agent 3: QuantumSimulator
-- Implements Qiskit circuits: Toric Code, Anyon Braiding, Surface Code
-- Runs 1000-shot simulations with noise analysis (0-5%)
-- Scales qubit count from 2-6 for error rate analysis
-- **Output**: `simulations/*.png`, `notebooks/quantum_analysis.ipynb`
-
-### Agent 4: CodeQualityPipeline
-- Black formatting (line-length: 100)
-- Ruff linting (pycodestyle, pyflakes, bugbear)
-- pytest with coverage
-
-### Agent 5: ArtifactPackager
-- Docker Compose for reproducible deployment
-- Streamlit dashboard for visualization
-
-### Agent 6: LocalDeployer
-- JupyterLab on `localhost:8888`
-- Streamlit on `localhost:8501`
-
-## 🧪 Test Results
-
-```
-=================== 16 passed, 0 failed ===================
-Coverage: 26% (core pipeline functions tested)
-```
-
-## 🛠️ Quick Start
+## 🚀 Quick Start
 
 ```bash
+# Clone and enter directory
+cd QuantumResearchPipeline
+
 # Install dependencies
 pip install -r requirements.txt
 
-# Run arXiv scraper
-python arxiv_scraper.py
+# Run the full pipeline
+python arxiv_scraper.py       # Scrape papers
+python vision_trainer.py      # Train vision model (GPU)
+python quantum_simulator.py   # Run quantum simulations
 
-# Train vision model (requires GPU)
-python vision_trainer.py
-
-# Run quantum simulations
-python quantum_simulator.py
-
-# Run tests
-pytest tests/ -v --cov=.
+# Launch servers
+jupyter lab --port=8888 --NotebookApp.token=quantum2024
+streamlit run dashboard/app.py --server.port=8501
 ```
 
-## 📊 Outputs
+**Access:**
+- 📓 JupyterLab: http://localhost:8888 (token: `quantum2024`)
+- 📊 Dashboard: http://localhost:8501
+
+---
+
+## 🤖 Agent Pipeline
+
+This workspace was built using a 6-agent orchestration pattern:
+
+### Agent 1: arXivScraper
+Scrapes quantum computing + photonic compression papers from arXiv API.
+- **Output:** `papers/metadata.json`, downloaded PDFs
+
+### Agent 2: VisionModelTrainer  
+Fine-tunes MobileNetV3-Small on RTX 4070 for figure classification.
+- **Performance:** 94% validation accuracy (10 epochs, ~30s)
+- **Output:** `models/mobilenetv3_quantum.pth`
+
+### Agent 3: QuantumSimulator
+Implements and simulates topological quantum circuits using Qiskit.
+- **Circuits:** Toric Code, Anyon Braiding, Surface Code
+- **Output:** `simulations/*.png`, `notebooks/quantum_analysis.ipynb`
+
+### Agent 4: CodeQualityPipeline
+Formats and tests all generated code.
+- **Tools:** black, ruff, pytest
+- **Results:** 16/16 tests passing
+
+### Agent 5: ArtifactPackager
+Bundles everything for reproducible deployment.
+- **Output:** `docker-compose.yml`, Streamlit dashboard
+
+### Agent 6: LocalDeployer
+Launches interactive servers for exploration.
+- **Services:** JupyterLab (8888), Streamlit (8501)
+
+---
+
+## 📁 Project Structure
 
 ```
 QuantumResearchPipeline/
+├── arxiv_scraper.py          # Paper scraping agent
+├── vision_trainer.py         # Vision model training
+├── quantum_simulator.py      # Qiskit simulations
+├── requirements.txt          # Python dependencies
+├── pyproject.toml            # Project config (black/ruff/pytest)
+├── docker-compose.yml        # Container orchestration
+├── Dockerfile.streamlit      # Dashboard Dockerfile
+├── README.md                 # This file
+│
 ├── papers/
-│   ├── metadata.json          # Paper metadata
-│   └── *.pdf                  # Downloaded papers
+│   ├── metadata.json         # Scraped paper metadata
+│   ├── selected_for_simulation.json
+│   └── *.pdf                 # Downloaded papers
+│
 ├── models/
-│   ├── mobilenetv3_quantum.pth   # Trained model
-│   └── training_history.json     # Training metrics
+│   ├── mobilenetv3_quantum.pth    # Trained model checkpoint
+│   ├── training_history.json      # Training metrics
+│   └── sample_predictions.json    # Inference results
+│
 ├── simulations/
-│   ├── toric_code_circuit.png    # Circuit diagram
+│   ├── toric_code_circuit.png     # Circuit diagram
 │   ├── anyon_braiding_circuit.png
 │   ├── surface_code_circuit.png
-│   ├── error_rate_scaling.png    # Analysis plot
-│   └── simulation_results.json
+│   ├── error_rate_scaling.png     # Analysis plot
+│   └── simulation_results.json    # Raw results
+│
 ├── notebooks/
-│   └── quantum_analysis.ipynb    # Interactive notebook
-└── dashboard/
-    └── app.py                    # Streamlit dashboard
+│   └── quantum_analysis.ipynb     # Interactive notebook
+│
+├── dashboard/
+│   └── app.py                     # Streamlit dashboard
+│
+└── tests/
+    ├── test_scraper.py            # Scraper unit tests
+    └── test_quantum.py            # Quantum sim tests
 ```
+
+---
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+pytest tests/ -v
+
+# Run with coverage
+pytest tests/ --cov=. --cov-report=term-missing
+
+# Expected output:
+# =================== 16 passed in 0.54s ====================
+```
+
+---
+
+## 🐳 Docker Deployment
+
+```bash
+# Build and run with Docker Compose
+docker-compose up -d
+
+# With GPU support
+docker-compose --profile gpu up -d
+
+# Access services
+# JupyterLab: http://localhost:8888 (token: quantum2024)
+# Streamlit:  http://localhost:8501
+```
+
+---
+
+## 📊 Benchmarks
+
+| Task | Hardware | Time |
+|------|----------|------|
+| Vision model training (10 epochs) | RTX 4070 | ~30s |
+| Quantum simulations (3 circuits) | CPU | <10s |
+| Full test suite | CPU | 0.54s |
+| arXiv paper scraping | Network | ~15s |
+
+---
 
 ## 📜 License
 
 MIT License - Research and Educational Use
+
+---
+
+## 🙏 Acknowledgments
+
+- [arXiv API](https://arxiv.org/help/api) for paper access
+- [Qiskit](https://qiskit.org/) for quantum simulation
+- [PyTorch](https://pytorch.org/) for vision model training
+- [Streamlit](https://streamlit.io/) for dashboard visualization

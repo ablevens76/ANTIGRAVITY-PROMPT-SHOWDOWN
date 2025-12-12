@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimeCapsule - Video Search</title>
+    <style>
+        :root {
+            --bg-primary: #0f0f1a;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --accent: #e94560;
+            --accent-hover: #ff6b6b;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --border: #2a2a4a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--accent), #ff9a9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+        
+        .stat {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            min-width: 120px;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .search-input:focus {
+            border-color: var(--accent);
+        }
+        
+        .search-btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .search-btn:hover {
+            background: var(--accent-hover);
+        }
+        
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .result-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--border);
+        }
+        
+        .result-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(233, 69, 96, 0.2);
+        }
+        
+        .result-thumbnail {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background: var(--bg-secondary);
+        }
+        
+        .result-info {
+            padding: 1rem;
+        }
+        
+        .result-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .result-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .result-score {
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        .result-transcript {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        
+        .video-player {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .video-player.active {
+            display: flex;
+        }
+        
+        .video-player video {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .ingest-panel {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .ingest-panel h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .ingest-form {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .ingest-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+        }
+        
+        .ingest-btn {
+            padding: 0.75rem 1.5rem;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .ingest-status {
+            margin-top: 1rem;
+            color: var(--text-secondary);
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 TimeCapsule</h1>
+            <p class="subtitle">GPU-Accelerated Video Search</p>
+            
+            <div class="stats" id="stats">
+                <div class="stat">
+                    <div class="stat-value" id="video-count">-</div>
+                    <div class="stat-label">Videos</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="keyframe-count">-</div>
+                    <div class="stat-label">Keyframes</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="transcript-count">-</div>
+                    <div class="stat-label">Transcript Segments</div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="ingest-panel">
+            <h3>📥 Ingest Videos</h3>
+            <div class="ingest-form">
+                <input type="text" class="ingest-input" id="ingest-folder" 
+                       placeholder="Enter folder path (e.g., /home/user/videos)">
+                <button class="ingest-btn" onclick="startIngest()">Start Ingest</button>
+            </div>
+            <div class="ingest-status" id="ingest-status"></div>
+        </div>
+        
+        <div class="search-box">
+            <input type="text" class="search-input" id="search-query" 
+                   placeholder="Search videos... (e.g., 'person explaining code')"
+                   onkeypress="if(event.key==='Enter') search()">
+            <button class="search-btn" onclick="search()">🔍 Search</button>
+        </div>
+        
+        <div class="results" id="results"></div>
+    </div>
+    
+    <div class="video-player" id="video-player" onclick="closePlayer()">
+        <span class="close-btn">&times;</span>
+        <video id="video-element" controls></video>
+    </div>
+    
+    <script>
+        // Load stats on page load
+        async function loadStats() {
+            try {
+                const res = await fetch('/api/stats');
+                const data = await res.json();
+                document.getElementById('video-count').textContent = data.video_count || 0;
+                document.getElementById('keyframe-count').textContent = data.keyframe_count || 0;
+                document.getElementById('transcript-count').textContent = data.transcript_segments || 0;
+            } catch (e) {
+                console.error('Failed to load stats:', e);
+            }
+        }
+        
+        // Search
+        async function search() {
+            const query = document.getElementById('search-query').value.trim();
+            if (!query) return;
+            
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="no-results">Searching...</div>';
+            
+            try {
+                const res = await fetch(`/api/search?q=${encodeURIComponent(query)}&topk=20`);
+                const data = await res.json();
+                
+                if (data.results && data.results.length > 0) {
+                    resultsDiv.innerHTML = data.results.map(r => `
+                        <div class="result-card" onclick="playVideo('${r.video_path}', ${r.timestamp})">
+                            <img class="result-thumbnail" 
+                                 src="${r.thumbnail ? '/thumbnail/' + r.thumbnail.split('/').pop() : ''}" 
+                                 alt="Thumbnail"
+                                 onerror="this.style.background='#2a2a4a'">
+                            <div class="result-info">
+                                <div class="result-title">${r.filename || 'Unknown'}</div>
+                                <div class="result-meta">
+                                    <span>⏱️ ${formatTime(r.timestamp)}</span>
+                                    <span class="result-score">${(r.score * 100).toFixed(0)}% match</span>
+                                </div>
+                                ${r.transcript ? `<div class="result-transcript">"${r.transcript.substring(0, 80)}..."</div>` : ''}
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    resultsDiv.innerHTML = '<div class="no-results">No results found. Try a different query.</div>';
+                }
+            } catch (e) {
+                resultsDiv.innerHTML = `<div class="no-results">Error: ${e.message}</div>`;
+            }
+        }
+        
+        // Play video at timestamp
+        function playVideo(path, timestamp) {
+            const player = document.getElementById('video-player');
+            const video = document.getElementById('video-element');
+            
+            video.src = `/video?path=${encodeURIComponent(path)}#t=${timestamp}`;
+            video.currentTime = timestamp;
+            player.classList.add('active');
+            video.play();
+        }
+        
+        function closePlayer() {
+            const player = document.getElementById('video-player');
+            const video = document.getElementById('video-element');
+            video.pause();
+            player.classList.remove('active');
+        }
+        
+        // Format seconds as MM:SS
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60);
+            return `${m}:${s.toString().padStart(2, '0')}`;
+        }
+        
+        // Ingest
+        async function startIngest() {
+            const folder = document.getElementById('ingest-folder').value.trim();
+            if (!folder) {
+                alert('Please enter a folder path');
+                return;
+            }
+            
+            const statusDiv = document.getElementById('ingest-status');
+            statusDiv.textContent = 'Starting ingestion...';
+            
+            try {
+                const res = await fetch('/api/ingest', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({folder: folder})
+                });
+                const data = await res.json();
+                
+                if (data.error) {
+                    statusDiv.textContent = `Error: ${data.error}`;
+                } else {
+                    statusDiv.textContent = `Started processing ${data.video_count} videos...`;
+                    pollIngestStatus();
+                }
+            } catch (e) {
+                statusDiv.textContent = `Error: ${e.message}`;
+            }
+        }
+        
+        async function pollIngestStatus() {
+            const statusDiv = document.getElementById('ingest-status');
+            
+            const check = async () => {
+                try {
+                    const res = await fetch('/api/ingest/status');
+                    const data = await res.json();
+                    
+                    statusDiv.textContent = data.message;
+                    
+                    if (data.running) {
+                        setTimeout(check, 2000);
+                    } else {
+                        loadStats(); // Refresh stats
+                    }
+                } catch (e) {
+                    statusDiv.textContent = `Error checking status: ${e.message}`;
+                }
+            };
+            
+            check();
+        }
+        
+        // Initialize
+        loadStats();
+    </script>
+</body>
+</html>

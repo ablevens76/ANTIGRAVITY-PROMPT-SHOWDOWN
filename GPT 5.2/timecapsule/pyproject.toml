@@ -1,0 +1,49 @@
+[project]
+name = "timecapsule"
+version = "0.1.0"
+description = "GPU-accelerated local video search with transcription, semantic embeddings, and instant playback"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    # PyTorch - install separately with CUDA wheel
+    "torch>=2.0",
+    "torchaudio>=2.0",
+    "torchvision>=0.15",
+    # Transcription - pin ctranslate2 for CUDA 11.8 compatibility
+    "faster-whisper>=1.0",
+    "ctranslate2>=4.0,<4.5",  # 4.5+ requires CUDA 12 + cuDNN 9
+    # Vision embeddings
+    "open-clip-torch>=2.20",
+    # Vector search
+    "faiss-cpu>=1.7",
+    # Web server
+    "fastapi>=0.100",
+    "uvicorn[standard]>=0.20",
+    "python-multipart",
+    "aiofiles",
+    # Utils
+    "numpy>=1.24",
+    "pillow>=10.0",
+    "click>=8.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio",
+    "httpx",
+]
+
+[project.scripts]
+timecapsule = "timecapsule.cli:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
